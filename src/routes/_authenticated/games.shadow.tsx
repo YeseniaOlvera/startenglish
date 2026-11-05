@@ -56,9 +56,16 @@ function Shadow() {
     <AppShell>
       <GameShell title="Find the shadow" titleEs="Busca la sombra" step={i} total={rounds.length}>
         <div className="flex items-center gap-4 rounded-3xl bg-audio/60 p-4 shadow-soft">
-          <div className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl bg-card text-5xl" aria-label="Sombra del objeto">
-            <span style={{ filter: found ? "none" : "brightness(0)", opacity: found ? 1 : 0.55 }}>{word.emoji}</span>
-          </div>
+          <div
+            className="h-24 w-24 shrink-0 rounded-2xl border-4 border-card bg-no-repeat shadow-soft transition-all duration-500"
+            aria-label="Sombra del objeto"
+            style={{
+              backgroundImage: `url(${SCENE_IMAGES[scene]})`,
+              backgroundSize: "528px 333px",
+              backgroundPosition: `${44 - word.x * 5.28}px ${44 - word.y * 3.33}px`,
+              filter: found ? "none" : "grayscale(1) brightness(0.3) contrast(2.2)",
+            }}
+          />
           <div className="flex-1">
             <p className="text-sm font-semibold text-muted-foreground">Find the · Encuentra:</p>
             <p className="text-3xl font-extrabold">{word.en}</p>
