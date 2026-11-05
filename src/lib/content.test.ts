@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getMission, isSentenceAccepted, MISSIONS } from "./content";
-import { computeStreak } from "./progress";
+import { computeStreak, findCompletedMission } from "./progress";
 
 describe("learning rules", () => {
   it("every lesson introduces at most 8 new words", () => {
@@ -17,5 +17,15 @@ describe("learning rules", () => {
     expect(computeStreak(["2026-11-05", "2026-11-04", "2026-11-02"], today)).toBe(2);
     expect(computeStreak(["2026-11-04", "2026-11-03"], today)).toBe(2);
     expect(computeStreak(["2026-11-01"], today)).toBe(0);
+  });
+  it("a completed mission cannot be started again", () => {
+    const rows = [
+      { mission_id: "coffee-order", status: "completed", score: 4 },
+      { mission_id: "home-living-room", status: "started", score: 1 },
+    ];
+    expect(findCompletedMission(rows, "coffee-order")?.score).toBe(4);
+    expect(findCompletedMission(rows, "home-living-room")).toBeUndefined();
+    expect(findCompletedMission(rows, "coffee-seat")).toBeUndefined();
+    expect(findCompletedMission([], "coffee-order")).toBeUndefined();
   });
 });

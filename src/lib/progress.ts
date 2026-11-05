@@ -33,8 +33,16 @@ export const progressQuery = queryOptions({
   },
 });
 
-export function computeStreak(days: string[], today = new Date()) {
-  const set = new Set(days);
+export type MissionRow = { mission_id: string; status: string; score: number };
+
+export function findCompletedMission<T extends { mission_id: string; status: string }>(
+  missions: T[],
+  missionId: string,
+): T | undefined {
+  return missions.find((m) => m.mission_id === missionId && m.status === "completed");
+}
+
+export function computeStreak(days: string[], today = new Date()) {  const set = new Set(days);
   const d = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
   const key = () => d.toISOString().slice(0, 10);
   if (!set.has(key())) d.setUTCDate(d.getUTCDate() - 1); // streak still alive if practiced yesterday

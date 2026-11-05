@@ -4,18 +4,19 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Volume2, Check, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { getMission, isSentenceAccepted, WORDS, type CompanionId, type Mission } from "@/lib/content";
-import { completeMission, profileQuery } from "@/lib/progress";
+import { completeMission, findCompletedMission, profileQuery, progressQuery } from "@/lib/progress";
 import { speak } from "@/lib/speech";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
 export const Route = createFileRoute("/_authenticated/mission/$id")({
   head: () => ({ meta: [{"title": "Misión — English Start"}, {"name": "description", "content": "Aprende palabras y construye frases en inglés con apoyo en español en las misiones de English Start."}, {"property": "og:title", "content": "Misión — English Start"}, {"property": "og:description", "content": "Aprende palabras y construye frases en inglés con apoyo en español en las misiones de English Start."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
-  loader: ({ params, context }) => {
+  loader: async ({ params, context }) => {
     const m = getMission(params.id);
     if (!m) throw notFound();
-    context.queryClient.ensureQueryData(profileQuery);
-    return m;
+    const progress = await context.queryClient.ensureQueryData(progressQuery);
+    await context.queryClient.ensureQueryData(profileQuery);
+    return { mission: m, completed: findCompletedMission(progress.missions, m.id) };
   },
   component: MissionPage,
 });
@@ -32,7 +33,7 @@ function shuffle<T>(arr: T[]) {
 }
 
 function MissionPage() {
-  const mission = Route.useLoaderData();
+  const { mission, completed } = Route.useLoaderData();
   const { data: profile } = useSuspenseQuery(profileQuery);
   const companion = (profile?.companion as CompanionId) ?? "fox";
   const steps = useMemo<Step[]>(
@@ -52,6 +53,15 @@ function MissionPage() {
     setI((x) => x + 1);
   };
   const total = mission.words.length + 1;
+
+  if (completed)
+    return (
+      <div className="min-h-screen bg-sky px-5 py-6">
+        <div className="mx-auto max-w-xl">
+          <AlreadyDone mission={mission} score={completed.score} />
+        </div>
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-sky px-5 py-6">
@@ -197,6 +207,28 @@ function Build({ mission, companion, onNext }: { mission: Mission; companion: Co
             <Button variant="audio" size="lg" onClick={() => speak(s.tokens.join(" "), companion)} aria-label="Escuchar frase"><Volume2 /></Button>
           </>
         )}
+      </div>
+    </div>
+  );
+}
+
+function AlreadyDone({ mission, score }: { mission: Mission; score: number }) {
+  return (
+    <div className="rounded-3xl bg-card p-8 text-center shadow-lift">
+      <span className="rounded-full bg-vocab px-3 py-1 text-xs font-bold">Completada · Completed</span>
+      <p className="mt-6 text-6xl">🔒</p>
+      <h1 className="mt-4 text-3xl">Mission complete!</h1>
+      <p className="mt-1 text-lg text-muted-foreground" lang="es">Ya hiciste esta misión, así que quedó cerrada.</p>
+      <p className="mt-2 text-muted-foreground">Aciertos al primer intento: {score} de {mission.words.length + 1}</p>
+      <div className="mt-6 flex flex-wrap justify-center gap-2">
+        {mission.words.map((w) => (
+          <span key={w} className="rounded-full bg-vocab px-3 py-1 font-bold">{WORDS[w]?.emoji} {WORDS[w]?.en} · {WORDS[w]?.es}</span>
+        ))}
+      </div>
+      <p className="mt-4 text-sm text-muted-foreground" lang="es">Busca la siguiente misión en el mapa.</p>
+      <div className="mt-6 flex justify-center gap-3">
+        <Button asChild variant="soft" size="lg"><Link to={mission.location === "home" ? "/world/home" : "/world/coffee-shop"}>Volver al lugar</Link></Button>
+        <Button asChild variant="hero" size="lg"><Link to="/dashboard">Ir al panel</Link></Button>
       </div>
     </div>
   );

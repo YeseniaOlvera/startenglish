@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { Volume2, X, Clock, CheckCircle2 } from "lucide-react";
 import { COMPANIONS, LOCATIONS, MISSIONS, SCENE_WORDS, WORDS, type CompanionId } from "@/lib/content";
-import { markWordsSeen, profileQuery, progressQuery } from "@/lib/progress";
+import { markWordsSeen, profileQuery, progressQuery, findCompletedMission } from "@/lib/progress";
 import { speak } from "@/lib/speech";
 import { Button } from "@/components/ui/button";
 
@@ -25,7 +25,6 @@ export function Scene({
   const { data: progress } = useSuspenseQuery(progressQuery);
   const [active, setActive] = useState<string | null>(null);
   const companion = COMPANIONS[(profile?.companion as CompanionId) ?? "fox"];
-  const done = new Set(progress.missions.map((m) => m.mission_id));
   const word = active ? WORDS[active]! : null;
 
   const tap = (id: string) => {
@@ -89,22 +88,38 @@ export function Scene({
       <section>
         <h2 className="mb-3 text-xl">Missions · Misiones</h2>
         <div className="grid gap-3 md:grid-cols-2">
-          {MISSIONS.filter((m) => m.location === location).map((m) => (
-            <Link
-              key={m.id}
-              to="/mission/$id"
-              params={{ id: m.id }}
-              className="group flex items-center justify-between gap-4 rounded-2xl bg-phrase/70 p-5 shadow-soft transition-transform hover:-translate-y-0.5"
-            >
-              <div>
-                <p className="text-lg font-extrabold">{m.title}</p>
-                <p className="text-sm font-semibold">{m.titleEs}</p>
-                <p className="text-sm text-muted-foreground">{m.goal}</p>
-                <p className="mt-2 flex items-center gap-1 text-xs font-semibold"><Clock className="h-3.5 w-3.5" /> {m.minutes} min · {m.words.length} palabras</p>
-              </div>
-              {done.has(m.id) ? <CheckCircle2 className="h-7 w-7 text-vocab-strong" /> : <span className="font-bold text-primary-strong">Empezar →</span>}
-            </Link>
-          ))}
+          {MISSIONS.filter((m) => m.location === location).map((m) => {
+            const finished = Boolean(findCompletedMission(progress.missions, m.id));
+            if (finished) {
+              return (
+                <div key={m.id} className="flex items-center justify-between gap-4 rounded-2xl bg-vocab/45 p-5 shadow-soft">
+                  <div>
+                    <p className="text-lg font-extrabold">{m.title}</p>
+                    <p className="text-sm font-semibold">{m.titleEs}</p>
+                    <p className="text-sm text-muted-foreground">{m.goal}</p>
+                    <p className="mt-2 flex items-center gap-1 text-xs font-semibold"><CheckCircle2 className="h-3.5 w-3.5" /> Completada · ya no se puede repetir</p>
+                  </div>
+                  <span className="shrink-0 rounded-full bg-card px-3 py-1.5 text-xs font-extrabold text-vocab-strong shadow-soft">✓ Hecha</span>
+                </div>
+              );
+            }
+            return (
+              <Link
+                key={m.id}
+                to="/mission/$id"
+                params={{ id: m.id }}
+                className="group flex items-center justify-between gap-4 rounded-2xl bg-phrase/70 p-5 shadow-soft transition-transform hover:-translate-y-0.5"
+              >
+                <div>
+                  <p className="text-lg font-extrabold">{m.title}</p>
+                  <p className="text-sm font-semibold">{m.titleEs}</p>
+                  <p className="text-sm text-muted-foreground">{m.goal}</p>
+                  <p className="mt-2 flex items-center gap-1 text-xs font-semibold"><Clock className="h-3.5 w-3.5" /> {m.minutes} min · {m.words.length} palabras</p>
+                </div>
+                <span className="font-bold text-primary-strong">Empezar →</span>
+              </Link>
+            );
+          })}
         </div>
       </section>
     </div>
