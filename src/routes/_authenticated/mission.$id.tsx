@@ -60,7 +60,7 @@ function MissionPage() {
           <Link to={mission.location === "home" ? "/world/home" : "/world/coffee-shop"} className="text-2xl font-bold text-muted-foreground" aria-label="Salir">×</Link>
           <Progress value={(i / (steps.length - 1)) * 100} className="h-3 bg-card" />
         </div>
-        <p className="mt-6 text-sm font-bold text-muted-foreground">{mission.title}</p>
+        <p className="mt-6 text-sm font-bold text-muted-foreground">{mission.title} · {mission.titleEs}</p>
         <div className="mt-4">
           {step.kind === "learn" && <Learn key={i} wordId={step.word} companion={companion} onNext={() => next()} />}
           {step.kind === "choose" && <Choose key={i} wordId={step.word} pool={mission.words} companion={companion} onNext={next} />}
@@ -79,8 +79,9 @@ function Learn({ wordId, companion, onNext }: { wordId: string; companion: Compa
       <span className="rounded-full bg-vocab px-3 py-1 text-xs font-bold">New word · Escucha</span>
       <div className="mx-auto mt-6 grid h-32 w-32 place-items-center rounded-3xl bg-vocab text-7xl">{w.emoji}</div>
       <p className="mt-6 text-5xl font-black">{w.en}</p>
-      <p className="mt-2 text-lg text-muted-foreground">“{w.example}”</p>
-      <p className="mt-1 text-sm text-muted-foreground">({w.es})</p>
+      <p className="mt-2 text-xl text-muted-foreground" lang="es">{w.es}</p>
+      <p className="mt-4 text-lg" lang="en">“{w.example}”</p>
+      <p className="mt-1 text-sm text-muted-foreground" lang="es">{w.exampleEs}</p>
       <div className="mt-8 flex justify-center gap-3">
         <Button variant="audio" size="lg" onClick={() => speak(`${w.en}. ${w.example}`, companion)}><Volume2 /> Escuchar</Button>
         <Button variant="hero" size="lg" onClick={onNext}>Siguiente</Button>
@@ -120,20 +121,22 @@ function Choose({ wordId, pool, companion, onNext }: { wordId: string; pool: str
           const isWrong = wrong.includes(id);
           const isRight = (right || revealed) && id === wordId;
           return (
-            <button
+            <Button
+              variant="outline"
               key={id}
               onClick={() => pick(id)}
               disabled={isWrong}
-              className={`rounded-2xl border-2 p-4 transition-all ${isRight ? "border-vocab-strong bg-vocab" : isWrong ? "border-transparent bg-muted opacity-50" : "border-border bg-card hover:bg-accent"}`}
+              className={`h-auto min-w-0 flex-col whitespace-normal rounded-2xl border-2 px-2 py-4 transition-all ${isRight ? "border-vocab-strong bg-vocab" : isWrong ? "border-transparent bg-muted opacity-50" : "border-border bg-card hover:bg-accent"}`}
             >
               <div className="text-5xl">{o.emoji}</div>
-              <div className="mt-2 font-bold">{o.en}</div>
-            </button>
+              <div className="mt-2 break-words font-bold" lang="en">{o.en}</div>
+              <div className="text-sm font-normal text-muted-foreground" lang="es">{o.es}</div>
+            </Button>
           );
         })}
       </div>
       <p className="mt-6 min-h-6 font-semibold">
-        {right ? "Great job! 🎉" : revealed ? <>La respuesta correcta es <span className="text-vocab-strong">“{w.en}”</span>. ¡A la próxima la tienes!</> : ""}
+        {right ? "Great job! 🎉" : revealed ? <>La respuesta correcta es <span className="text-vocab-strong">“{w.en}” ({w.es})</span>. ¡A la próxima la tienes!</> : ""}
       </p>
       {(right || revealed) && <Button variant="hero" size="lg" className="mt-2" onClick={() => onNext(right && wrong.length === 0)}>Continuar</Button>}
     </div>
@@ -162,7 +165,8 @@ function Build({ mission, companion, onNext }: { mission: Mission; companion: Co
   return (
     <div className="rounded-3xl bg-card p-8 shadow-lift">
       <span className="rounded-full bg-phrase px-3 py-1 text-xs font-bold">Construye la frase</span>
-      <p className="mt-4 text-lg font-semibold">{s.meaning}</p>
+      <p className="mt-4 text-lg font-semibold" lang="en">{s.tokens.join(" ")}</p>
+      <p className="mt-1 text-muted-foreground" lang="es">{s.meaning}</p>
       <div className="mt-6 flex min-h-16 flex-wrap gap-2 rounded-2xl border-2 border-dashed p-3">
         {picked.map((k) => (
           <button key={k} onClick={() => { setPicked(picked.filter((x) => x !== k)); setState("idle"); }} className="rounded-xl bg-phrase px-3 py-2 font-bold">
@@ -220,10 +224,11 @@ function Done({ mission, score, total }: { mission: Mission; score: number; tota
     <div className="rounded-3xl bg-card p-8 text-center shadow-lift">
       <p className="text-6xl">🎉</p>
       <h1 className="mt-4 text-3xl">Mission complete!</h1>
+      <p className="mt-1 text-lg text-muted-foreground">¡Misión completada!</p>
       <p className="mt-2 text-muted-foreground">Aciertos al primer intento: {score} de {total}</p>
       <div className="mt-6 flex flex-wrap justify-center gap-2">
         {mission.words.map((w) => (
-          <span key={w} className="rounded-full bg-vocab px-3 py-1 font-bold">{WORDS[w]!.emoji} {WORDS[w]!.en}</span>
+          <span key={w} className="rounded-full bg-vocab px-3 py-1 font-bold">{WORDS[w]?.emoji} {WORDS[w]?.en} · {WORDS[w]?.es}</span>
         ))}
       </div>
       <p className="mt-4 text-sm text-muted-foreground">{saved === "saving" ? "Guardando…" : saved === "saved" ? "Progreso guardado ✓" : "Sin guardar"}</p>

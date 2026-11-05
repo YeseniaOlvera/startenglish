@@ -31,6 +31,7 @@ export type Word = {
   es: string;
   emoji: string;
   example: string;
+  exampleEs: string;
   /** hotspot position on the scene image, in percent */
   x: number;
   y: number;
@@ -61,22 +62,22 @@ export const LOCATIONS: Location[] = [
 ];
 
 export const WORDS: Record<string, Word> = {
-  sofa: { id: "sofa", en: "sofa", es: "sofá", emoji: "🛋️", example: "I sit on the sofa.", x: 33, y: 40 },
-  lamp: { id: "lamp", en: "lamp", es: "lámpara", emoji: "💡", example: "Turn on the lamp, please.", x: 29, y: 24 },
-  door: { id: "door", en: "door", es: "puerta", emoji: "🚪", example: "Close the door.", x: 48, y: 17 },
-  window: { id: "window", en: "window", es: "ventana", emoji: "🪟", example: "Open the window.", x: 16, y: 30 },
-  table: { id: "table", en: "table", es: "mesa", emoji: "🍽️", example: "The keys are on the table.", x: 63, y: 46 },
-  chair: { id: "chair", en: "chair", es: "silla", emoji: "🪑", example: "Take a chair.", x: 57, y: 58 },
-  fridge: { id: "fridge", en: "fridge", es: "refrigerador", emoji: "🧊", example: "The milk is in the fridge.", x: 66, y: 22 },
-  bed: { id: "bed", en: "bed", es: "cama", emoji: "🛏️", example: "I go to bed at ten.", x: 52, y: 85 },
-  coffee: { id: "coffee", en: "coffee", es: "café", emoji: "☕", example: "A coffee, please.", x: 41, y: 28 },
-  cup: { id: "cup", en: "cup", es: "taza", emoji: "🍵", example: "A big cup, please.", x: 47, y: 13 },
-  croissant: { id: "croissant", en: "croissant", es: "cuernito", emoji: "🥐", example: "Can I have a croissant?", x: 63, y: 36 },
-  menu: { id: "menu", en: "menu", es: "menú", emoji: "📋", example: "Can I see the menu?", x: 66, y: 17 },
-  counter: { id: "counter", en: "counter", es: "mostrador", emoji: "🧾", example: "Pay at the counter.", x: 57, y: 50 },
-  "cafe-table": { id: "cafe-table", en: "table", es: "mesa", emoji: "🍽️", example: "Is this table free?", x: 48, y: 67 },
-  "cafe-chair": { id: "cafe-chair", en: "chair", es: "silla", emoji: "🪑", example: "Is this chair free?", x: 36, y: 52 },
-  "cafe-door": { id: "cafe-door", en: "door", es: "puerta", emoji: "🚪", example: "The door is open.", x: 12, y: 63 },
+  sofa: { id: "sofa", en: "sofa", es: "sofá", emoji: "🛋️", example: "I sit on the sofa.", exampleEs: "Me siento en el sofá.", x: 33, y: 40 },
+  lamp: { id: "lamp", en: "lamp", es: "lámpara", emoji: "💡", example: "Turn on the lamp, please.", exampleEs: "Enciende la lámpara, por favor.", x: 29, y: 24 },
+  door: { id: "door", en: "door", es: "puerta", emoji: "🚪", example: "Close the door.", exampleEs: "Cierra la puerta.", x: 48, y: 17 },
+  window: { id: "window", en: "window", es: "ventana", emoji: "🪟", example: "Open the window.", exampleEs: "Abre la ventana.", x: 16, y: 30 },
+  table: { id: "table", en: "table", es: "mesa", emoji: "🍽️", example: "The keys are on the table.", exampleEs: "Las llaves están en la mesa.", x: 63, y: 46 },
+  chair: { id: "chair", en: "chair", es: "silla", emoji: "🪑", example: "Take a chair.", exampleEs: "Toma una silla.", x: 57, y: 58 },
+  fridge: { id: "fridge", en: "fridge", es: "refrigerador", emoji: "🧊", example: "The milk is in the fridge.", exampleEs: "La leche está en el refrigerador.", x: 66, y: 22 },
+  bed: { id: "bed", en: "bed", es: "cama", emoji: "🛏️", example: "I go to bed at ten.", exampleEs: "Me voy a la cama a las diez.", x: 52, y: 85 },
+  coffee: { id: "coffee", en: "coffee", es: "café", emoji: "☕", example: "A coffee, please.", exampleEs: "Un café, por favor.", x: 41, y: 28 },
+  cup: { id: "cup", en: "cup", es: "taza", emoji: "🍵", example: "A big cup, please.", exampleEs: "Una taza grande, por favor.", x: 47, y: 13 },
+  croissant: { id: "croissant", en: "croissant", es: "cuernito", emoji: "🥐", example: "Can I have a croissant?", exampleEs: "¿Me puedes dar un cuernito?", x: 63, y: 36 },
+  menu: { id: "menu", en: "menu", es: "menú", emoji: "📋", example: "Can I see the menu?", exampleEs: "¿Puedo ver el menú?", x: 66, y: 17 },
+  counter: { id: "counter", en: "counter", es: "mostrador", emoji: "🧾", example: "Pay at the counter.", exampleEs: "Paga en el mostrador.", x: 57, y: 50 },
+  "cafe-table": { id: "cafe-table", en: "table", es: "mesa", emoji: "🍽️", example: "Is this table free?", exampleEs: "¿Está libre esta mesa?", x: 48, y: 67 },
+  "cafe-chair": { id: "cafe-chair", en: "chair", es: "silla", emoji: "🪑", example: "Is this chair free?", exampleEs: "¿Está libre esta silla?", x: 36, y: 52 },
+  "cafe-door": { id: "cafe-door", en: "door", es: "puerta", emoji: "🚪", example: "The door is open.", exampleEs: "La puerta está abierta.", x: 12, y: 63 },
 };
 
 export const SCENE_WORDS: Record<"home" | "coffee-shop", string[]> = {
@@ -96,6 +97,7 @@ export type Mission = {
   id: string;
   location: "home" | "coffee-shop";
   title: string;
+  titleEs: string;
   goal: string;
   minutes: number;
   words: string[];
@@ -107,6 +109,7 @@ export const MISSIONS: Mission[] = [
     id: "home-living-room",
     location: "home",
     title: "My living room",
+    titleEs: "Mi sala",
     goal: "Nombra las cosas de tu sala.",
     minutes: 6,
     words: ["sofa", "lamp", "window", "door", "table"],
@@ -120,6 +123,7 @@ export const MISSIONS: Mission[] = [
     id: "home-kitchen",
     location: "home",
     title: "Kitchen and bedroom",
+    titleEs: "Cocina y recámara",
     goal: "Encuentra objetos de la cocina y la recámara.",
     minutes: 5,
     words: ["fridge", "chair", "bed", "table"],
@@ -133,6 +137,7 @@ export const MISSIONS: Mission[] = [
     id: "coffee-order",
     location: "coffee-shop",
     title: "Order a coffee",
+    titleEs: "Pide un café",
     goal: "Pide un café y algo de comer.",
     minutes: 7,
     words: ["coffee", "cup", "croissant", "menu"],
@@ -146,6 +151,7 @@ export const MISSIONS: Mission[] = [
     id: "coffee-seat",
     location: "coffee-shop",
     title: "Find a seat",
+    titleEs: "Encuentra un asiento",
     goal: "Encuentra dónde sentarte y pagar.",
     minutes: 5,
     words: ["cafe-table", "cafe-chair", "counter", "cafe-door"],

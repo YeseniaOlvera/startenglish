@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { Volume2, X, Clock, CheckCircle2 } from "lucide-react";
-import { COMPANIONS, MISSIONS, SCENE_WORDS, WORDS, type CompanionId } from "@/lib/content";
+import { COMPANIONS, LOCATIONS, MISSIONS, SCENE_WORDS, WORDS, type CompanionId } from "@/lib/content";
 import { markWordsSeen, profileQuery, progressQuery } from "@/lib/progress";
 import { speak } from "@/lib/speech";
 import { Button } from "@/components/ui/button";
@@ -12,11 +12,13 @@ export function Scene({
   title,
   image,
   intro,
+  introEs,
 }: {
   location: "home" | "coffee-shop";
   title: string;
   image: string;
   intro: string;
+  introEs: string;
 }) {
   const qc = useQueryClient();
   const { data: profile } = useSuspenseQuery(profileQuery);
@@ -38,6 +40,7 @@ export function Scene({
         <div>
           <Link to="/world" className="text-sm font-semibold text-primary-strong">← World map</Link>
           <h1 className="text-3xl md:text-4xl">{title}</h1>
+          <p className="text-muted-foreground">{LOCATIONS.find((item) => item.id === location)?.es}</p>
         </div>
       </div>
 
@@ -60,7 +63,9 @@ export function Scene({
             <div className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-vocab text-3xl">{word.emoji}</div>
             <div className="min-w-0 flex-1">
               <p className="text-2xl font-extrabold">{word.en}</p>
-              <p className="truncate text-sm text-muted-foreground">“{word.example}” · {word.es}</p>
+              <p className="text-sm text-muted-foreground" lang="es">{word.es}</p>
+              <p className="mt-1 text-sm" lang="en">“{word.example}”</p>
+              <p className="text-sm text-muted-foreground" lang="es">{word.exampleEs}</p>
             </div>
             <Button variant="audio" size="icon" onClick={() => speak(`${word.en}. ${word.example}`, companion.id)} aria-label="Escuchar">
               <Volume2 />
@@ -72,14 +77,17 @@ export function Scene({
 
       <div className="flex items-start gap-4 rounded-2xl bg-character/60 p-4">
         <img src={companion.image} alt={companion.name} className="h-16 w-auto" />
-        <p className="flex-1 pt-1 font-semibold"><span className="font-extrabold">{companion.name}:</span> {intro}</p>
+        <div className="min-w-0 flex-1 pt-1">
+          <p className="font-semibold" lang="en"><span className="font-extrabold">{companion.name}:</span> {intro}</p>
+          <p className="mt-1 text-sm text-muted-foreground" lang="es">{introEs}</p>
+        </div>
         <Button variant="audio" size="icon" onClick={() => speak(intro, companion.id)} aria-label={`Escuchar a ${companion.name}`}>
           <Volume2 />
         </Button>
       </div>
 
       <section>
-        <h2 className="mb-3 text-xl">Missions</h2>
+        <h2 className="mb-3 text-xl">Missions · Misiones</h2>
         <div className="grid gap-3 md:grid-cols-2">
           {MISSIONS.filter((m) => m.location === location).map((m) => (
             <Link
@@ -90,10 +98,11 @@ export function Scene({
             >
               <div>
                 <p className="text-lg font-extrabold">{m.title}</p>
+                <p className="text-sm font-semibold">{m.titleEs}</p>
                 <p className="text-sm text-muted-foreground">{m.goal}</p>
-                <p className="mt-2 flex items-center gap-1 text-xs font-semibold"><Clock className="h-3.5 w-3.5" /> {m.minutes} min · {m.words.length} words</p>
+                <p className="mt-2 flex items-center gap-1 text-xs font-semibold"><Clock className="h-3.5 w-3.5" /> {m.minutes} min · {m.words.length} palabras</p>
               </div>
-              {done.has(m.id) ? <CheckCircle2 className="h-7 w-7 text-vocab-strong" /> : <span className="font-bold text-primary-strong">Start →</span>}
+              {done.has(m.id) ? <CheckCircle2 className="h-7 w-7 text-vocab-strong" /> : <span className="font-bold text-primary-strong">Empezar →</span>}
             </Link>
           ))}
         </div>
