@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Volume2, Check, RotateCcw } from "lucide-react";
+import { Volume2, Check, RotateCcw, X } from "lucide-react";
 import { toast } from "sonner";
 import { getMission, isSentenceAccepted, WORDS, type CompanionId, type Mission } from "@/lib/content";
 import { completeMission, findCompletedMission, profileQuery, progressQuery } from "@/lib/progress";
