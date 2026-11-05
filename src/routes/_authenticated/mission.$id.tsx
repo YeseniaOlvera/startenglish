@@ -66,9 +66,12 @@ function MissionPage() {
   return (
     <div className="min-h-screen bg-sky px-5 py-6">
       <div className="mx-auto max-w-xl">
-        <div className="flex items-center gap-4">
-          <Link to={mission.location === "home" ? "/world/home" : "/world/coffee-shop"} className="text-2xl font-bold text-muted-foreground" aria-label="Salir">×</Link>
-          <Progress value={(i / (steps.length - 1)) * 100} className="h-3 bg-card" />
+        <div className="flex items-center gap-3">
+          <Button asChild variant="soft" size="sm" className="shrink-0">
+            <Link to={mission.location === "home" ? "/world/home" : "/world/coffee-shop"} aria-label="Salir de la misión"><X /> Salir</Link>
+          </Button>
+          <Progress value={(i / (steps.length - 1)) * 100} className="h-3 border border-border bg-card" aria-label="Progreso de la misión" />
+          <span className="shrink-0 text-xs font-bold text-muted-foreground">{Math.min(i + 1, steps.length)}/{steps.length}</span>
         </div>
         <p className="mt-6 text-sm font-bold text-muted-foreground">{mission.title} · {mission.titleEs}</p>
         <div className="mt-4">
