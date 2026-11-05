@@ -38,7 +38,7 @@ AppShell (barra inferior en móvil / lateral en escritorio), CompanionAvatar + b
 Cada usuario solo puede leer y modificar sus propios datos.
 
 ## 6. Diseño visual
-Paleta: Azul #2878C8 (principal), Verde #55B8A7, Amarillo #FFD166, Coral #F39A83, Fondo #F5F7FA. Tipografía Nunito. Estética moderna 3D suave tipo "diorama" (no infantil), esquinas redondeadas, sombras suaves, animaciones sutiles. Imágenes generadas: mapa isométrico del mundo, escenas My Home y Coffee Shop, los 4 compañeros, más fotos reales de objetos cuando ayuden.
+Paleta: pastel derivada de la original, con un color por tipo de contenido para ayudar a la memoria (codificación por color): Azul pastel #8DB8E8 (principal / navegación), Verde menta #A8DCD1 (vocabulario y aciertos), Amarillo mantequilla #FFE4A3 (frases y misiones), Coral melocotón #F8C4B6 (personajes y diálogos), Lavanda suave #D6CCF0 (pronunciación / audio), Fondo crema #FAF8F5; texto en azul marino suave #2F3E5C para buen contraste. Tipografía Nunito. Estética moderna 3D suave tipo "diorama" (no infantil), esquinas redondeadas, sombras suaves, animaciones sutiles. Imágenes generadas: mapa isométrico del mundo, escenas My Home y Coffee Shop, los 4 compañeros, más fotos reales de objetos cuando ayuden.
 
 ## 7. Etapas
 1. Sistema de diseño, landing, imágenes y personajes.
