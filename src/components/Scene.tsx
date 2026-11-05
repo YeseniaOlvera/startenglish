@@ -28,7 +28,7 @@ export function Scene({
 
   const tap = (id: string) => {
     setActive(id);
-    speak(WORDS[id]!.en);
+    speak(WORDS[id]!.en, companion.id);
     markWordsSeen([id]).then(() => qc.invalidateQueries({ queryKey: ["progress"] })).catch(() => {});
   };
 
@@ -62,7 +62,7 @@ export function Scene({
               <p className="text-2xl font-extrabold">{word.en}</p>
               <p className="truncate text-sm text-muted-foreground">“{word.example}” · {word.es}</p>
             </div>
-            <Button variant="audio" size="icon" onClick={() => speak(`${word.en}. ${word.example}`)} aria-label="Escuchar">
+            <Button variant="audio" size="icon" onClick={() => speak(`${word.en}. ${word.example}`, companion.id)} aria-label="Escuchar">
               <Volume2 />
             </Button>
             <button onClick={() => setActive(null)} aria-label="Cerrar" className="text-muted-foreground"><X className="h-5 w-5" /></button>

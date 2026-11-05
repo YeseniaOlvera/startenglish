@@ -62,9 +62,9 @@ function MissionPage() {
         </div>
         <p className="mt-6 text-sm font-bold text-muted-foreground">{mission.title}</p>
         <div className="mt-4">
-          {step.kind === "learn" && <Learn key={i} wordId={step.word} onNext={() => next()} />}
-          {step.kind === "choose" && <Choose key={i} wordId={step.word} pool={mission.words} onNext={next} />}
-          {step.kind === "build" && <Build mission={mission} onNext={next} />}
+          {step.kind === "learn" && <Learn key={i} wordId={step.word} companion={companion} onNext={() => next()} />}
+          {step.kind === "choose" && <Choose key={i} wordId={step.word} pool={mission.words} companion={companion} onNext={next} />}
+          {step.kind === "build" && <Build mission={mission} companion={companion} onNext={next} />}
           {step.kind === "done" && <Done mission={mission} score={score} total={total} />}
         </div>
       </div>
@@ -72,7 +72,7 @@ function MissionPage() {
   );
 }
 
-function Learn({ wordId, onNext }: { wordId: string; onNext: () => void }) {
+function Learn({ wordId, companion, onNext }: { wordId: string; companion: CompanionId; onNext: () => void }) {
   const w = WORDS[wordId]!;
   return (
     <div className="rounded-3xl bg-card p-8 text-center shadow-lift">
@@ -82,14 +82,14 @@ function Learn({ wordId, onNext }: { wordId: string; onNext: () => void }) {
       <p className="mt-2 text-lg text-muted-foreground">“{w.example}”</p>
       <p className="mt-1 text-sm text-muted-foreground">({w.es})</p>
       <div className="mt-8 flex justify-center gap-3">
-        <Button variant="audio" size="lg" onClick={() => speak(`${w.en}. ${w.example}`)}><Volume2 /> Escuchar</Button>
+        <Button variant="audio" size="lg" onClick={() => speak(`${w.en}. ${w.example}`, companion)}><Volume2 /> Escuchar</Button>
         <Button variant="hero" size="lg" onClick={onNext}>Siguiente</Button>
       </div>
     </div>
   );
 }
 
-function Choose({ wordId, pool, onNext }: { wordId: string; pool: string[]; onNext: (firstTry: boolean) => void }) {
+function Choose({ wordId, pool, companion, onNext }: { wordId: string; pool: string[]; companion: CompanionId; onNext: (firstTry: boolean) => void }) {
   const w = WORDS[wordId]!;
   const options = useMemo(() => shuffle([wordId, ...shuffle(pool.filter((p) => p !== wordId)).slice(0, 2)]), [wordId, pool]);
   const [wrong, setWrong] = useState<string[]>([]);
@@ -99,7 +99,7 @@ function Choose({ wordId, pool, onNext }: { wordId: string; pool: string[]; onNe
     if (right) return;
     if (id === wordId) {
       setRight(true);
-      speak(w.en);
+      speak(w.en, companion);
     } else {
       setWrong((x) => [...x, id]);
     }
@@ -108,7 +108,7 @@ function Choose({ wordId, pool, onNext }: { wordId: string; pool: string[]; onNe
   return (
     <div className="rounded-3xl bg-card p-8 text-center shadow-lift">
       <span className="rounded-full bg-audio px-3 py-1 text-xs font-bold">Escucha y elige</span>
-      <Button variant="audio" size="lg" className="mx-auto mt-6 h-20 w-20 rounded-full" onClick={() => speak(w.en)} aria-label="Reproducir">
+      <Button variant="audio" size="lg" className="mx-auto mt-6 h-20 w-20 rounded-full" onClick={() => speak(w.en, companion)} aria-label="Reproducir">
         <Volume2 className="!size-8" />
       </Button>
       <div className="mt-8 grid grid-cols-3 gap-3">
@@ -137,7 +137,7 @@ function Choose({ wordId, pool, onNext }: { wordId: string; pool: string[]; onNe
   );
 }
 
-function Build({ mission, onNext }: { mission: Mission; onNext: (firstTry: boolean) => void }) {
+function Build({ mission, companion, onNext }: { mission: Mission; companion: CompanionId; onNext: (firstTry: boolean) => void }) {
   const s = mission.sentence;
   const bank = useMemo(() => shuffle(s.tokens.map((t, k) => ({ t, k }))), [s]);
   const [picked, setPicked] = useState<number[]>([]);
@@ -149,7 +149,7 @@ function Build({ mission, onNext }: { mission: Mission; onNext: (firstTry: boole
     setTries((t) => t + 1);
     if (isSentenceAccepted(s, answer)) {
       setState("ok");
-      speak(answer);
+      speak(answer, companion);
     } else setState("retry");
   };
 
@@ -182,7 +182,7 @@ function Build({ mission, onNext }: { mission: Mission; onNext: (firstTry: boole
           <>
             <Button variant="hero" size="lg" onClick={check} disabled={picked.length === 0}><Check /> Revisar</Button>
             <Button variant="soft" size="lg" onClick={() => { setPicked([]); setState("idle"); }}><RotateCcw /> Borrar</Button>
-            <Button variant="audio" size="lg" onClick={() => speak(s.tokens.join(" "))} aria-label="Escuchar frase"><Volume2 /></Button>
+            <Button variant="audio" size="lg" onClick={() => speak(s.tokens.join(" "), companion)} aria-label="Escuchar frase"><Volume2 /></Button>
           </>
         )}
       </div>
