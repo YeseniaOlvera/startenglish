@@ -22,7 +22,7 @@ function CompanionPage() {
 
   const pick = (id: CompanionId) => {
     setSel(id);
-    speak(COMPANIONS[id].greeting);
+    speak(COMPANIONS[id].greeting, id);
   };
 
   const save = async () => {
