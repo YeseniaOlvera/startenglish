@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { Volume2, X, Clock, CheckCircle2 } from "lucide-react";
 import { COMPANIONS, LOCATIONS, MISSIONS, SCENE_WORDS, WORDS, type CompanionId } from "@/lib/content";
-import { markWordsSeen, profileQuery, progressQuery } from "@/lib/progress";
+import { markWordsSeen, profileQuery, progressQuery, findCompletedMission } from "@/lib/progress";
 import { speak } from "@/lib/speech";
 import { Button } from "@/components/ui/button";
 
@@ -25,7 +25,6 @@ export function Scene({
   const { data: progress } = useSuspenseQuery(progressQuery);
   const [active, setActive] = useState<string | null>(null);
   const companion = COMPANIONS[(profile?.companion as CompanionId) ?? "fox"];
-  const done = new Set(progress.missions.map((m) => m.mission_id));
   const word = active ? WORDS[active]! : null;
 
   const tap = (id: string) => {

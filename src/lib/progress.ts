@@ -33,6 +33,15 @@ export const progressQuery = queryOptions({
   },
 });
 
+export type MissionRow = { mission_id: string; status: string; score: number };
+
+export function findCompletedMission<T extends { mission_id: string; status: string }>(
+  missions: T[],
+  missionId: string,
+): T | undefined {
+  return missions.find((m) => m.mission_id === missionId && m.status === "completed");
+}
+
 export function computeStreak(days: string[], today = new Date()) {  const set = new Set(days);
   const d = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
   const key = () => d.toISOString().slice(0, 10);
