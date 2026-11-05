@@ -16,6 +16,10 @@ import { Route as AuthenticatedCompanionRouteImport } from './routes/_authentica
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedWelcomeRouteImport } from './routes/_authenticated/welcome'
+import { Route as AuthenticatedGamesIndexRouteImport } from './routes/_authenticated/games.index'
+import { Route as AuthenticatedGamesLettersRouteImport } from './routes/_authenticated/games.letters'
+import { Route as AuthenticatedGamesMemoryRouteImport } from './routes/_authenticated/games.memory'
+import { Route as AuthenticatedGamesShadowRouteImport } from './routes/_authenticated/games.shadow'
 import { Route as AuthenticatedMissionIdRouteImport } from './routes/_authenticated/mission.$id'
 import { Route as AuthenticatedWorldIndexRouteImport } from './routes/_authenticated/world.index'
 import { Route as AuthenticatedWorldCoffeeShopRouteImport } from './routes/_authenticated/world.coffee-shop'
@@ -55,6 +59,29 @@ const AuthenticatedWelcomeRoute = AuthenticatedWelcomeRouteImport.update({
   path: '/welcome',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedGamesIndexRoute = AuthenticatedGamesIndexRouteImport.update({
+  id: '/games/',
+  path: '/games/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedGamesLettersRoute =
+  AuthenticatedGamesLettersRouteImport.update({
+    id: '/games/letters',
+    path: '/games/letters',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedGamesMemoryRoute =
+  AuthenticatedGamesMemoryRouteImport.update({
+    id: '/games/memory',
+    path: '/games/memory',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedGamesShadowRoute =
+  AuthenticatedGamesShadowRouteImport.update({
+    id: '/games/shadow',
+    path: '/games/shadow',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedMissionIdRoute = AuthenticatedMissionIdRouteImport.update({
   id: '/mission/$id',
   path: '/mission/$id',
@@ -84,9 +111,13 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/welcome': typeof AuthenticatedWelcomeRoute
+  '/games/letters': typeof AuthenticatedGamesLettersRoute
+  '/games/memory': typeof AuthenticatedGamesMemoryRoute
+  '/games/shadow': typeof AuthenticatedGamesShadowRoute
   '/mission/$id': typeof AuthenticatedMissionIdRoute
   '/world/coffee-shop': typeof AuthenticatedWorldCoffeeShopRoute
   '/world/home': typeof AuthenticatedWorldHomeRoute
+  '/games/': typeof AuthenticatedGamesIndexRoute
   '/world/': typeof AuthenticatedWorldIndexRoute
 }
 export interface FileRoutesByTo {
@@ -96,9 +127,13 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/welcome': typeof AuthenticatedWelcomeRoute
+  '/games/letters': typeof AuthenticatedGamesLettersRoute
+  '/games/memory': typeof AuthenticatedGamesMemoryRoute
+  '/games/shadow': typeof AuthenticatedGamesShadowRoute
   '/mission/$id': typeof AuthenticatedMissionIdRoute
   '/world/coffee-shop': typeof AuthenticatedWorldCoffeeShopRoute
   '/world/home': typeof AuthenticatedWorldHomeRoute
+  '/games': typeof AuthenticatedGamesIndexRoute
   '/world': typeof AuthenticatedWorldIndexRoute
 }
 export interface FileRoutesById {
@@ -110,9 +145,13 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/welcome': typeof AuthenticatedWelcomeRoute
+  '/_authenticated/games/letters': typeof AuthenticatedGamesLettersRoute
+  '/_authenticated/games/memory': typeof AuthenticatedGamesMemoryRoute
+  '/_authenticated/games/shadow': typeof AuthenticatedGamesShadowRoute
   '/_authenticated/mission/$id': typeof AuthenticatedMissionIdRoute
   '/_authenticated/world/coffee-shop': typeof AuthenticatedWorldCoffeeShopRoute
   '/_authenticated/world/home': typeof AuthenticatedWorldHomeRoute
+  '/_authenticated/games/': typeof AuthenticatedGamesIndexRoute
   '/_authenticated/world/': typeof AuthenticatedWorldIndexRoute
 }
 export interface FileRouteTypes {
@@ -124,9 +163,13 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/profile'
     | '/welcome'
+    | '/games/letters'
+    | '/games/memory'
+    | '/games/shadow'
     | '/mission/$id'
     | '/world/coffee-shop'
     | '/world/home'
+    | '/games/'
     | '/world/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -136,9 +179,13 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/profile'
     | '/welcome'
+    | '/games/letters'
+    | '/games/memory'
+    | '/games/shadow'
     | '/mission/$id'
     | '/world/coffee-shop'
     | '/world/home'
+    | '/games'
     | '/world'
   id:
     | '__root__'
@@ -149,9 +196,13 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/profile'
     | '/_authenticated/welcome'
+    | '/_authenticated/games/letters'
+    | '/_authenticated/games/memory'
+    | '/_authenticated/games/shadow'
     | '/_authenticated/mission/$id'
     | '/_authenticated/world/coffee-shop'
     | '/_authenticated/world/home'
+    | '/_authenticated/games/'
     | '/_authenticated/world/'
   fileRoutesById: FileRoutesById
 }
@@ -212,6 +263,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedWelcomeRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/games/': {
+      id: '/_authenticated/games/'
+      path: '/games'
+      fullPath: '/games/'
+      preLoaderRoute: typeof AuthenticatedGamesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/games/letters': {
+      id: '/_authenticated/games/letters'
+      path: '/games/letters'
+      fullPath: '/games/letters'
+      preLoaderRoute: typeof AuthenticatedGamesLettersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/games/memory': {
+      id: '/_authenticated/games/memory'
+      path: '/games/memory'
+      fullPath: '/games/memory'
+      preLoaderRoute: typeof AuthenticatedGamesMemoryRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/games/shadow': {
+      id: '/_authenticated/games/shadow'
+      path: '/games/shadow'
+      fullPath: '/games/shadow'
+      preLoaderRoute: typeof AuthenticatedGamesShadowRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/mission/$id': {
       id: '/_authenticated/mission/$id'
       path: '/mission/$id'
@@ -248,9 +327,13 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedWelcomeRoute: typeof AuthenticatedWelcomeRoute
+  AuthenticatedGamesLettersRoute: typeof AuthenticatedGamesLettersRoute
+  AuthenticatedGamesMemoryRoute: typeof AuthenticatedGamesMemoryRoute
+  AuthenticatedGamesShadowRoute: typeof AuthenticatedGamesShadowRoute
   AuthenticatedMissionIdRoute: typeof AuthenticatedMissionIdRoute
   AuthenticatedWorldCoffeeShopRoute: typeof AuthenticatedWorldCoffeeShopRoute
   AuthenticatedWorldHomeRoute: typeof AuthenticatedWorldHomeRoute
+  AuthenticatedGamesIndexRoute: typeof AuthenticatedGamesIndexRoute
   AuthenticatedWorldIndexRoute: typeof AuthenticatedWorldIndexRoute
 }
 
@@ -259,9 +342,13 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedWelcomeRoute: AuthenticatedWelcomeRoute,
+  AuthenticatedGamesLettersRoute: AuthenticatedGamesLettersRoute,
+  AuthenticatedGamesMemoryRoute: AuthenticatedGamesMemoryRoute,
+  AuthenticatedGamesShadowRoute: AuthenticatedGamesShadowRoute,
   AuthenticatedMissionIdRoute: AuthenticatedMissionIdRoute,
   AuthenticatedWorldCoffeeShopRoute: AuthenticatedWorldCoffeeShopRoute,
   AuthenticatedWorldHomeRoute: AuthenticatedWorldHomeRoute,
+  AuthenticatedGamesIndexRoute: AuthenticatedGamesIndexRoute,
   AuthenticatedWorldIndexRoute: AuthenticatedWorldIndexRoute,
 }
 

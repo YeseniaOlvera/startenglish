@@ -1,10 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { Home, Map, User } from "lucide-react";
+import { Gamepad2, Home, Map, User } from "lucide-react";
 import type { ReactNode } from "react";
 
 const NAV = [
   { to: "/dashboard", label: "Inicio", icon: Home },
   { to: "/world", label: "Mundo", icon: Map },
+  { to: "/games", label: "Juegos", icon: Gamepad2 },
   { to: "/profile", label: "Perfil", icon: User },
 ] as const;
 
