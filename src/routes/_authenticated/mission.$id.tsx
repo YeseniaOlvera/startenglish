@@ -94,14 +94,17 @@ function Choose({ wordId, pool, companion, onNext }: { wordId: string; pool: str
   const options = useMemo(() => shuffle([wordId, ...shuffle(pool.filter((p) => p !== wordId)).slice(0, 2)]), [wordId, pool]);
   const [wrong, setWrong] = useState<string[]>([]);
   const [right, setRight] = useState(false);
+  const [revealed, setRevealed] = useState(false);
 
   const pick = (id: string) => {
-    if (right) return;
+    if (right || revealed) return;
     if (id === wordId) {
       setRight(true);
       speak(w.en, companion);
     } else {
       setWrong((x) => [...x, id]);
+      setRevealed(true);
+      speak(w.en, companion);
     }
   };
 
@@ -115,7 +118,7 @@ function Choose({ wordId, pool, companion, onNext }: { wordId: string; pool: str
         {options.map((id) => {
           const o = WORDS[id]!;
           const isWrong = wrong.includes(id);
-          const isRight = right && id === wordId;
+          const isRight = (right || revealed) && id === wordId;
           return (
             <button
               key={id}
@@ -130,9 +133,9 @@ function Choose({ wordId, pool, companion, onNext }: { wordId: string; pool: str
         })}
       </div>
       <p className="mt-6 min-h-6 font-semibold">
-        {right ? "Great job! 🎉" : wrong.length ? "Almost! Escucha otra vez e inténtalo." : ""}
+        {right ? "Great job! 🎉" : revealed ? <>La respuesta correcta es <span className="text-vocab-strong">“{w.en}”</span>. ¡A la próxima la tienes!</> : ""}
       </p>
-      {right && <Button variant="hero" size="lg" className="mt-2" onClick={() => onNext(wrong.length === 0)}>Continuar</Button>}
+      {(right || revealed) && <Button variant="hero" size="lg" className="mt-2" onClick={() => onNext(right && wrong.length === 0)}>Continuar</Button>}
     </div>
   );
 }
@@ -141,7 +144,7 @@ function Build({ mission, companion, onNext }: { mission: Mission; companion: Co
   const s = mission.sentence;
   const bank = useMemo(() => shuffle(s.tokens.map((t, k) => ({ t, k }))), [s]);
   const [picked, setPicked] = useState<number[]>([]);
-  const [state, setState] = useState<"idle" | "ok" | "retry">("idle");
+  const [state, setState] = useState<"idle" | "ok" | "wrong">("idle");
   const [tries, setTries] = useState(0);
   const answer = picked.map((k) => s.tokens[k]).join(" ");
 
@@ -150,7 +153,10 @@ function Build({ mission, companion, onNext }: { mission: Mission; companion: Co
     if (isSentenceAccepted(s, answer)) {
       setState("ok");
       speak(answer, companion);
-    } else setState("retry");
+    } else {
+      setState("wrong");
+      speak(s.tokens.join(" "), companion);
+    }
   };
 
   return (
@@ -173,11 +179,13 @@ function Build({ mission, companion, onNext }: { mission: Mission; companion: Co
       </div>
       <p className="mt-5 min-h-6 font-semibold">
         {state === "ok" && "Perfect! 🎉 Así se dice."}
-        {state === "retry" && `Casi. Pista: empieza con “${s.tokens[0]}”.`}
+        {state === "wrong" && <>La frase correcta es: <span className="text-vocab-strong">“{s.tokens.join(" ")}”</span></>}
       </p>
       <div className="mt-3 flex gap-3">
         {state === "ok" ? (
           <Button variant="hero" size="lg" onClick={() => onNext(tries === 1)}>Terminar misión</Button>
+        ) : state === "wrong" ? (
+          <Button variant="hero" size="lg" onClick={() => onNext(false)}>Continuar</Button>
         ) : (
           <>
             <Button variant="hero" size="lg" onClick={check} disabled={picked.length === 0}><Check /> Revisar</Button>
