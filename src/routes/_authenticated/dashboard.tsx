@@ -83,7 +83,7 @@ function Dashboard() {
                   <p className="font-extrabold">{m.title}</p>
                   <p className="text-sm text-muted-foreground">{m.titleEs}</p>
                 </div>
-                {row ? <span className="rounded-full bg-card px-3 py-1 text-xs font-extrabold">✓ {row.score}%</span> : <span className="text-xs font-semibold text-muted-foreground">Pendiente</span>}
+                {row ? <span className="rounded-full bg-card px-3 py-1 text-xs font-extrabold">✓ {row.score}/{m.words.length + 1} aciertos</span> : <span className="text-xs font-semibold text-muted-foreground">Pendiente</span>}
               </div>
             );
           })}
