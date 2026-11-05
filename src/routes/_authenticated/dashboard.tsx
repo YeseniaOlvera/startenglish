@@ -62,8 +62,32 @@ function Dashboard() {
             <Button asChild variant="hero" size="lg"><Link to="/mission/$id" params={{ id: next.id }}>Comenzar</Link></Button>
           </div>
         ) : (
-          <div className="rounded-3xl bg-vocab/70 p-6 font-semibold">¡Completaste todas las misiones disponibles! Pronto se abrirán nuevos lugares.</div>
+          <div className="space-y-3 rounded-3xl bg-vocab/70 p-6 text-center shadow-soft">
+            <p className="text-6xl">🏆</p>
+            <p className="text-2xl font-extrabold">Congratulations! You did it!</p>
+            <p className="font-semibold">¡Felicidades! Completaste todas las misiones. Ganaste la medalla <span className="rounded-full bg-phrase px-2 py-0.5">⭐ Explorador inicial</span></p>
+            <p className="text-sm text-muted-foreground">Sigue practicando con los nuevos juegos mientras se abren nuevos lugares.</p>
+            <Button asChild variant="hero" size="lg"><Link to="/games">Ir a los juegos 🎮</Link></Button>
+          </div>
         )}
+      </section>
+
+      <section className="mt-8">
+        <h2 className="mb-3 text-xl">Misiones completadas · {done.size}/{MISSIONS.length}</h2>
+        <div className="grid gap-2 md:grid-cols-2">
+          {MISSIONS.map((m) => {
+            const row = progress.missions.find((r) => r.mission_id === m.id);
+            return (
+              <div key={m.id} className={`flex items-center justify-between gap-3 rounded-2xl p-4 shadow-soft ${row ? "bg-vocab/50" : "bg-card"}`}>
+                <div>
+                  <p className="font-extrabold">{m.title}</p>
+                  <p className="text-sm text-muted-foreground">{m.titleEs}</p>
+                </div>
+                {row ? <span className="rounded-full bg-card px-3 py-1 text-xs font-extrabold">✓ {row.score}/{m.words.length + 1} aciertos</span> : <span className="text-xs font-semibold text-muted-foreground">Pendiente</span>}
+              </div>
+            );
+          })}
+        </div>
       </section>
 
       <section className="mt-8 space-y-3">
@@ -71,6 +95,7 @@ function Dashboard() {
           <h2 className="text-xl">Explora</h2>
           <Link to="/world" className="font-bold text-primary-strong">Ver mapa →</Link>
         </div>
+        <Link to="/games" className="flex items-center justify-between rounded-2xl bg-audio/60 p-4 font-semibold shadow-soft">🎮 Juegos: busca la sombra, memorama y deletrea <span className="font-bold text-primary-strong">Jugar →</span></Link>
         <ComingSoon label="Conversar con tu compañero (IA)" />
         <ComingSoon label="Practicar pronunciación con micrófono" />
       </section>
