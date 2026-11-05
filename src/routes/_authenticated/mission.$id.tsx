@@ -254,6 +254,7 @@ function Done({ mission, score, total }: { mission: Mission; score: number; tota
   useEffect(() => {
     if (ran.current) return;
     ran.current = true;
+    celebrate();
     completeMission(mission.id, score, mission.words)
       .then(() => {
         setSaved("saved");
