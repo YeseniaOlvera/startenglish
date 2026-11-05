@@ -36,6 +36,24 @@ export function phraseDelivery(text: string) {
   };
 }
 
+let activeChime: AudioContext | undefined;
+
+/** Stop any playing speech and chime (e.g. when the tab is hidden). */
+export function stopAllAudio() {
+  if (typeof window === "undefined") return;
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  if (activeChime) {
+    void activeChime.close();
+    activeChime = undefined;
+  }
+}
+
+if (typeof window !== "undefined") {
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stopAllAudio();
+  });
+}
+
 /**
  * Cheerful celebration chime for correct answers, synthesized with Web Audio
  * (no audio files). Rising major arpeggio: C5 → E5 → G5 → C6.
@@ -45,6 +63,7 @@ export function celebrate() {
   const Ctx = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
   if (!Ctx) return;
   const ctx = new Ctx();
+  activeChime = ctx;
   const notes = [523.25, 659.25, 783.99, 1046.5];
   const start = ctx.currentTime + 0.02;
   notes.forEach((freq, i) => {
@@ -61,7 +80,10 @@ export function celebrate() {
     osc.stop(t + 0.4);
   });
   // Close the context once the chime finishes so we don't leak audio resources.
-  window.setTimeout(() => void ctx.close(), (notes.length * 0.12 + 0.5) * 1000);
+  window.setTimeout(() => {
+    void ctx.close();
+    if (activeChime === ctx) activeChime = undefined;
+  }, (notes.length * 0.12 + 0.5) * 1000);
 }
 
 export function speak(text: string, companion?: CompanionId) {
