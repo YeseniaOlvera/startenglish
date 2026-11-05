@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Volume2, Check, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { getMission, isSentenceAccepted, WORDS, type Mission } from "@/lib/content";
@@ -190,7 +190,10 @@ function Build({ mission, onNext }: { mission: Mission; onNext: (firstTry: boole
 function Done({ mission, score, total }: { mission: Mission; score: number; total: number }) {
   const qc = useQueryClient();
   const [saved, setSaved] = useState<"saving" | "saved" | "error">("saving");
-  useMemo(() => {
+  const ran = useRef(false);
+  useEffect(() => {
+    if (ran.current) return;
+    ran.current = true;
     completeMission(mission.id, score, mission.words)
       .then(() => {
         setSaved("saved");

@@ -16,6 +16,7 @@ import { Route as AuthenticatedCompanionRouteImport } from './routes/_authentica
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedWelcomeRouteImport } from './routes/_authenticated/welcome'
+import { Route as AuthenticatedMissionIdRouteImport } from './routes/_authenticated/mission.$id'
 import { Route as AuthenticatedWorldIndexRouteImport } from './routes/_authenticated/world.index'
 import { Route as AuthenticatedWorldCoffeeShopRouteImport } from './routes/_authenticated/world.coffee-shop'
 import { Route as AuthenticatedWorldHomeRouteImport } from './routes/_authenticated/world.home'
@@ -54,6 +55,11 @@ const AuthenticatedWelcomeRoute = AuthenticatedWelcomeRouteImport.update({
   path: '/welcome',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedMissionIdRoute = AuthenticatedMissionIdRouteImport.update({
+  id: '/mission/$id',
+  path: '/mission/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedWorldIndexRoute = AuthenticatedWorldIndexRouteImport.update({
   id: '/world/',
   path: '/world/',
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/welcome': typeof AuthenticatedWelcomeRoute
+  '/mission/$id': typeof AuthenticatedMissionIdRoute
   '/world/coffee-shop': typeof AuthenticatedWorldCoffeeShopRoute
   '/world/home': typeof AuthenticatedWorldHomeRoute
   '/world/': typeof AuthenticatedWorldIndexRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/welcome': typeof AuthenticatedWelcomeRoute
+  '/mission/$id': typeof AuthenticatedMissionIdRoute
   '/world/coffee-shop': typeof AuthenticatedWorldCoffeeShopRoute
   '/world/home': typeof AuthenticatedWorldHomeRoute
   '/world': typeof AuthenticatedWorldIndexRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/welcome': typeof AuthenticatedWelcomeRoute
+  '/_authenticated/mission/$id': typeof AuthenticatedMissionIdRoute
   '/_authenticated/world/coffee-shop': typeof AuthenticatedWorldCoffeeShopRoute
   '/_authenticated/world/home': typeof AuthenticatedWorldHomeRoute
   '/_authenticated/world/': typeof AuthenticatedWorldIndexRoute
@@ -115,6 +124,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/profile'
     | '/welcome'
+    | '/mission/$id'
     | '/world/coffee-shop'
     | '/world/home'
     | '/world/'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/profile'
     | '/welcome'
+    | '/mission/$id'
     | '/world/coffee-shop'
     | '/world/home'
     | '/world'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/profile'
     | '/_authenticated/welcome'
+    | '/_authenticated/mission/$id'
     | '/_authenticated/world/coffee-shop'
     | '/_authenticated/world/home'
     | '/_authenticated/world/'
@@ -200,6 +212,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedWelcomeRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/mission/$id': {
+      id: '/_authenticated/mission/$id'
+      path: '/mission/$id'
+      fullPath: '/mission/$id'
+      preLoaderRoute: typeof AuthenticatedMissionIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/world/': {
       id: '/_authenticated/world/'
       path: '/world'
@@ -229,6 +248,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedWelcomeRoute: typeof AuthenticatedWelcomeRoute
+  AuthenticatedMissionIdRoute: typeof AuthenticatedMissionIdRoute
   AuthenticatedWorldCoffeeShopRoute: typeof AuthenticatedWorldCoffeeShopRoute
   AuthenticatedWorldHomeRoute: typeof AuthenticatedWorldHomeRoute
   AuthenticatedWorldIndexRoute: typeof AuthenticatedWorldIndexRoute
@@ -239,6 +259,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedWelcomeRoute: AuthenticatedWelcomeRoute,
+  AuthenticatedMissionIdRoute: AuthenticatedMissionIdRoute,
   AuthenticatedWorldCoffeeShopRoute: AuthenticatedWorldCoffeeShopRoute,
   AuthenticatedWorldHomeRoute: AuthenticatedWorldHomeRoute,
   AuthenticatedWorldIndexRoute: AuthenticatedWorldIndexRoute,
