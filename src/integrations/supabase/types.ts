@@ -14,7 +14,93 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activity_log: {
+        Row: {
+          day: string
+          user_id: string
+        }
+        Insert: {
+          day?: string
+          user_id: string
+        }
+        Update: {
+          day?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      learned_words: {
+        Row: {
+          last_seen: string
+          times_seen: number
+          user_id: string
+          word_id: string
+        }
+        Insert: {
+          last_seen?: string
+          times_seen?: number
+          user_id: string
+          word_id: string
+        }
+        Update: {
+          last_seen?: string
+          times_seen?: number
+          user_id?: string
+          word_id?: string
+        }
+        Relationships: []
+      }
+      mission_progress: {
+        Row: {
+          completed_at: string
+          mission_id: string
+          score: number
+          status: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          mission_id: string
+          score?: number
+          status?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          mission_id?: string
+          score?: number
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          companion: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          level: string
+          onboarded: boolean
+        }
+        Insert: {
+          companion?: string | null
+          created_at?: string
+          display_name?: string | null
+          id: string
+          level?: string
+          onboarded?: boolean
+        }
+        Update: {
+          companion?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          level?: string
+          onboarded?: boolean
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
