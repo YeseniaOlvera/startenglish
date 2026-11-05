@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/profile")({
-  head: () => ({ meta: [{ title: "Perfil — English Start" }] }),
+  head: () => ({ meta: [{"title": "Perfil — English Start"}, {"name": "description", "content": "Consulta tu perfil de aprendizaje y tu compañero en English Start."}, {"property": "og:title", "content": "Perfil — English Start"}, {"property": "og:description", "content": "Consulta tu perfil de aprendizaje y tu compañero en English Start."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
   loader: ({ context }) => context.queryClient.ensureQueryData(profileQuery),
   component: Profile,
 });

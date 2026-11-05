@@ -5,7 +5,7 @@ import { Scene } from "@/components/Scene";
 import { profileQuery, progressQuery } from "@/lib/progress";
 
 export const Route = createFileRoute("/_authenticated/world/coffee-shop")({
-  head: () => ({ meta: [{ title: "The Coffee Shop — English Start" }] }),
+  head: () => ({ meta: [{"title": "The Coffee Shop — English Start"}, {"name": "description", "content": "Practica inglés y español en la cafetería con palabras, frases y misiones de English Start."}, {"property": "og:title", "content": "The Coffee Shop — English Start"}, {"property": "og:description", "content": "Practica inglés y español en la cafetería con palabras, frases y misiones de English Start."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
   loader: ({ context }) =>
     Promise.all([context.queryClient.ensureQueryData(profileQuery), context.queryClient.ensureQueryData(progressQuery)]),
   component: () => (

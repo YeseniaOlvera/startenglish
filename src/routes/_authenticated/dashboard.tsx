@@ -7,7 +7,7 @@ import { profileQuery, progressQuery } from "@/lib/progress";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "Mi panel — English Start" }] }),
+  head: () => ({ meta: [{"title": "Mi panel — English Start"}, {"name": "description", "content": "Consulta tu progreso y continúa tus misiones de inglés en English Start."}, {"property": "og:title", "content": "Mi panel — English Start"}, {"property": "og:description", "content": "Consulta tu progreso y continúa tus misiones de inglés en English Start."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
   loader: async ({ context }) => {
     const profile = await context.queryClient.ensureQueryData(profileQuery);
     if (!profile?.onboarded) throw redirect({ to: "/welcome" });

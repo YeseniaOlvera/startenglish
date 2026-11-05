@@ -5,7 +5,7 @@ import { COMPANIONS } from "@/lib/content";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/welcome")({
-  head: () => ({ meta: [{ title: "Bienvenida — English Start" }] }),
+  head: () => ({ meta: [{"title": "Bienvenida — English Start"}, {"name": "description", "content": "Descubre English Start y comienza a aprender inglés explorando situaciones cotidianas."}, {"property": "og:title", "content": "Bienvenida — English Start"}, {"property": "og:description", "content": "Descubre English Start y comienza a aprender inglés explorando situaciones cotidianas."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
   component: Welcome,
 });
 

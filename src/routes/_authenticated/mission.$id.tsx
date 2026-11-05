@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
 export const Route = createFileRoute("/_authenticated/mission/$id")({
-  head: () => ({ meta: [{ title: "Misión — English Start" }] }),
+  head: () => ({ meta: [{"title": "Misión — English Start"}, {"name": "description", "content": "Aprende palabras y construye frases en inglés con apoyo en español en las misiones de English Start."}, {"property": "og:title", "content": "Misión — English Start"}, {"property": "og:description", "content": "Aprende palabras y construye frases en inglés con apoyo en español en las misiones de English Start."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
   loader: ({ params, context }) => {
     const m = getMission(params.id);
     if (!m) throw notFound();
