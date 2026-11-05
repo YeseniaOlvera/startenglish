@@ -5,7 +5,7 @@ import { Volume2, Check, RotateCcw, X } from "lucide-react";
 import { toast } from "sonner";
 import { getMission, isSentenceAccepted, WORDS, type CompanionId, type Mission } from "@/lib/content";
 import { completeMission, findCompletedMission, profileQuery, progressQuery } from "@/lib/progress";
-import { speak } from "@/lib/speech";
+import { celebrate, speak } from "@/lib/speech";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
@@ -122,6 +122,7 @@ function Choose({ wordId, pool, companion, onNext }: { wordId: string; pool: str
     if (right || revealed) return;
     if (id === wordId) {
       setRight(true);
+      celebrate();
       speak(w.en, companion);
     } else {
       setWrong((x) => [...x, id]);
@@ -176,6 +177,7 @@ function Build({ mission, companion, onNext }: { mission: Mission; companion: Co
     setTries((t) => t + 1);
     if (isSentenceAccepted(s, answer)) {
       setState("ok");
+      celebrate();
       speak(answer, companion);
     } else {
       setState("wrong");
