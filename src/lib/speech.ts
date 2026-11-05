@@ -36,6 +36,34 @@ export function phraseDelivery(text: string) {
   };
 }
 
+/**
+ * Cheerful celebration chime for correct answers, synthesized with Web Audio
+ * (no audio files). Rising major arpeggio: C5 → E5 → G5 → C6.
+ */
+export function celebrate() {
+  if (typeof window === "undefined") return;
+  const Ctx = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+  if (!Ctx) return;
+  const ctx = new Ctx();
+  const notes = [523.25, 659.25, 783.99, 1046.5];
+  const start = ctx.currentTime + 0.02;
+  notes.forEach((freq, i) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "triangle";
+    osc.frequency.value = freq;
+    const t = start + i * 0.12;
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(0.22, t + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.4);
+  });
+  // Close the context once the chime finishes so we don't leak audio resources.
+  window.setTimeout(() => void ctx.close(), (notes.length * 0.12 + 0.5) * 1000);
+}
+
 export function speak(text: string, companion?: CompanionId) {
   if (typeof window === "undefined" || !("speechSynthesis" in window)) return false;
   const phrases = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((part) => part.trim()).filter(Boolean);
