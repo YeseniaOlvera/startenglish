@@ -210,9 +210,11 @@ Prioriza la calidad de la experiencia sobre la cantidad de funcionalidades.
 
 El resultado debe transmitir que English Start no es simplemente otra aplicación para estudiar inglés: es un mundo al que las personas entran para comenzar a vivir el idioma.
 
-###url_publica
+###urls_publica
 
 https://screenshot-snap-to-pixel.lovable.app
+
+https://startenglish.app/
 
 ```sh
 git clone <this-repository-url>
