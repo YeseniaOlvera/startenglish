@@ -61,8 +61,8 @@ function Shadow() {
             aria-label="Sombra del objeto"
             style={{
               backgroundImage: `url(${SCENE_IMAGES[scene]})`,
-              backgroundSize: "600% auto",
-              backgroundPosition: `${word.x}% ${word.y}%`,
+              backgroundSize: "528px 333px",
+              backgroundPosition: `${44 - word.x * 5.28}px ${44 - word.y * 3.33}px`,
               filter: found ? "none" : "grayscale(1) brightness(0.3) contrast(2.2)",
             }}
           />
