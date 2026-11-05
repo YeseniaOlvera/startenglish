@@ -5,7 +5,7 @@ import { AppShell } from "@/components/AppShell";
 import { LOCATIONS } from "@/lib/content";
 
 export const Route = createFileRoute("/_authenticated/world/")({
-  head: () => ({ meta: [{ title: "Mapa del mundo — English Start" }] }),
+  head: () => ({ meta: [{"title": "Mapa del mundo — English Start"}, {"name": "description", "content": "Explora el mapa de English Start y elige un lugar para practicar inglés."}, {"property": "og:title", "content": "Mapa del mundo — English Start"}, {"property": "og:description", "content": "Explora el mapa de English Start y elige un lugar para practicar inglés."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
   component: WorldMap,
 });
 

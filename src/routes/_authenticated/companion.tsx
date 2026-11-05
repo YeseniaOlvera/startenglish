@@ -8,7 +8,7 @@ import { speak } from "@/lib/speech";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/companion")({
-  head: () => ({ meta: [{ title: "Elige tu compañero — English Start" }] }),
+  head: () => ({ meta: [{"title": "Elige tu compañero — English Start"}, {"name": "description", "content": "Elige el personaje que te acompañará mientras exploras y practicas inglés en English Start."}, {"property": "og:title", "content": "Elige tu compañero — English Start"}, {"property": "og:description", "content": "Elige el personaje que te acompañará mientras exploras y practicas inglés en English Start."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
   loader: ({ context }) => context.queryClient.ensureQueryData(profileQuery),
   component: CompanionPage,
 });
