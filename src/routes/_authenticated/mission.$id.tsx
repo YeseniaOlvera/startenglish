@@ -14,11 +14,9 @@ export const Route = createFileRoute("/_authenticated/mission/$id")({
   loader: async ({ params, context }) => {
     const m = getMission(params.id);
     if (!m) throw notFound();
-    const [profile, progress] = await Promise.all([
-      context.queryClient.ensureQueryData(profileQuery),
-      context.queryClient.ensureQueryData(progressQuery),
-    ]);
-    return { mission: m, profile, completed: findCompletedMission(progress.missions, m.id) };
+    const progress = await context.queryClient.ensureQueryData(progressQuery);
+    await context.queryClient.ensureQueryData(profileQuery);
+    return { mission: m, completed: findCompletedMission(progress.missions, m.id) };
   },
   component: MissionPage,
 });
@@ -35,7 +33,7 @@ function shuffle<T>(arr: T[]) {
 }
 
 function MissionPage() {
-  const mission = Route.useLoaderData();
+  const { mission, completed } = Route.useLoaderData();
   const { data: profile } = useSuspenseQuery(profileQuery);
   const companion = (profile?.companion as CompanionId) ?? "fox";
   const steps = useMemo<Step[]>(
