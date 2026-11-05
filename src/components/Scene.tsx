@@ -24,11 +24,11 @@ export function Scene({
   const [active, setActive] = useState<string | null>(null);
   const companion = COMPANIONS[(profile?.companion as CompanionId) ?? "fox"];
   const done = new Set(progress.missions.map((m) => m.mission_id));
-  const word = active ? WORDS[active] : null;
+  const word = active ? WORDS[active]! : null;
 
   const tap = (id: string) => {
     setActive(id);
-    speak(WORDS[id].en);
+    speak(WORDS[id]!.en);
     markWordsSeen([id]).then(() => qc.invalidateQueries({ queryKey: ["progress"] })).catch(() => {});
   };
 
@@ -43,8 +43,8 @@ export function Scene({
 
       <div className="relative overflow-hidden rounded-3xl bg-card shadow-lift">
         <img src={image} alt={title} width={1600} height={1008} className="w-full" />
-        {SCENE_WORDS[location].map((id) => {
-          const w = WORDS[id];
+        {SCENE_WORDS[location]!.map((id) => {
+          const w = WORDS[id]!;
           return (
             <button
               key={id}

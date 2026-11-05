@@ -17,7 +17,7 @@ const SLIDES = [
 
 function Welcome() {
   const [i, setI] = useState(0);
-  const s = SLIDES[i];
+  const s = SLIDES[i]!;
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-sky px-6 py-10 text-center">
       {i === 0 ? (

@@ -25,7 +25,7 @@ function shuffle<T>(arr: T[]) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+    [a[i], a[j]] = [a[j]!, a[i]!];
   }
   return a;
 }
@@ -43,7 +43,7 @@ function MissionPage() {
   );
   const [i, setI] = useState(0);
   const [score, setScore] = useState(0);
-  const step = steps[i];
+  const step = steps[i] ?? { kind: "done" as const };
   const next = (firstTry?: boolean) => {
     if (firstTry) setScore((s) => s + 1);
     setI((x) => x + 1);
@@ -70,7 +70,7 @@ function MissionPage() {
 }
 
 function Learn({ wordId, onNext }: { wordId: string; onNext: () => void }) {
-  const w = WORDS[wordId];
+  const w = WORDS[wordId]!;
   return (
     <div className="rounded-3xl bg-card p-8 text-center shadow-lift">
       <span className="rounded-full bg-vocab px-3 py-1 text-xs font-bold">New word · Escucha</span>
@@ -87,7 +87,7 @@ function Learn({ wordId, onNext }: { wordId: string; onNext: () => void }) {
 }
 
 function Choose({ wordId, pool, onNext }: { wordId: string; pool: string[]; onNext: (firstTry: boolean) => void }) {
-  const w = WORDS[wordId];
+  const w = WORDS[wordId]!;
   const options = useMemo(() => shuffle([wordId, ...shuffle(pool.filter((p) => p !== wordId)).slice(0, 2)]), [wordId, pool]);
   const [wrong, setWrong] = useState<string[]>([]);
   const [right, setRight] = useState(false);
@@ -110,7 +110,7 @@ function Choose({ wordId, pool, onNext }: { wordId: string; pool: string[]; onNe
       </Button>
       <div className="mt-8 grid grid-cols-3 gap-3">
         {options.map((id) => {
-          const o = WORDS[id];
+          const o = WORDS[id]!;
           const isWrong = wrong.includes(id);
           const isRight = right && id === wordId;
           return (
@@ -212,7 +212,7 @@ function Done({ mission, score, total }: { mission: Mission; score: number; tota
       <p className="mt-2 text-muted-foreground">Aciertos al primer intento: {score} de {total}</p>
       <div className="mt-6 flex flex-wrap justify-center gap-2">
         {mission.words.map((w) => (
-          <span key={w} className="rounded-full bg-vocab px-3 py-1 font-bold">{WORDS[w].emoji} {WORDS[w].en}</span>
+          <span key={w} className="rounded-full bg-vocab px-3 py-1 font-bold">{WORDS[w]!.emoji} {WORDS[w]!.en}</span>
         ))}
       </div>
       <p className="mt-4 text-sm text-muted-foreground">{saved === "saving" ? "Guardando…" : saved === "saved" ? "Progreso guardado ✓" : "Sin guardar"}</p>
