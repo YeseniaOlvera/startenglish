@@ -94,14 +94,17 @@ function Choose({ wordId, pool, companion, onNext }: { wordId: string; pool: str
   const options = useMemo(() => shuffle([wordId, ...shuffle(pool.filter((p) => p !== wordId)).slice(0, 2)]), [wordId, pool]);
   const [wrong, setWrong] = useState<string[]>([]);
   const [right, setRight] = useState(false);
+  const [revealed, setRevealed] = useState(false);
 
   const pick = (id: string) => {
-    if (right) return;
+    if (right || revealed) return;
     if (id === wordId) {
       setRight(true);
       speak(w.en, companion);
     } else {
       setWrong((x) => [...x, id]);
+      setRevealed(true);
+      speak(w.en, companion);
     }
   };
 
@@ -115,7 +118,7 @@ function Choose({ wordId, pool, companion, onNext }: { wordId: string; pool: str
         {options.map((id) => {
           const o = WORDS[id]!;
           const isWrong = wrong.includes(id);
-          const isRight = right && id === wordId;
+          const isRight = (right || revealed) && id === wordId;
           return (
             <button
               key={id}
@@ -130,9 +133,9 @@ function Choose({ wordId, pool, companion, onNext }: { wordId: string; pool: str
         })}
       </div>
       <p className="mt-6 min-h-6 font-semibold">
-        {right ? "Great job! 🎉" : wrong.length ? "Almost! Escucha otra vez e inténtalo." : ""}
+        {right ? "Great job! 🎉" : revealed ? <>La respuesta correcta es <span className="text-vocab-strong">“{w.en}”</span>. ¡A la próxima la tienes!</> : ""}
       </p>
-      {right && <Button variant="hero" size="lg" className="mt-2" onClick={() => onNext(wrong.length === 0)}>Continuar</Button>}
+      {(right || revealed) && <Button variant="hero" size="lg" className="mt-2" onClick={() => onNext(right && wrong.length === 0)}>Continuar</Button>}
     </div>
   );
 }
