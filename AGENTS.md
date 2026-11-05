@@ -15,3 +15,4 @@
 - Each learning content type has its own color token (vocab, phrase, character, audio) in `src/styles.css`; use those tokens, not raw colors. Why: color coding supports memory.
 
 - Keep beginner bilingual translations alongside their English content in typed content modules; audio continues to pronounce the English text with the selected companion. Why: translation support stays consistent without changing pronunciation practice.
+- Apply sentence-level pronunciation delivery centrally in the speech helper and reuse one selected voice across each playback. Why: every learning screen gets consistent phrasing without losing the companion's voice.
