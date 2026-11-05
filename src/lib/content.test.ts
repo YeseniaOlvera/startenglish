@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getMission, isSentenceAccepted, MISSIONS } from "./content";
-import { computeStreak } from "./progress";
+import { computeStreak, findCompletedMission } from "./progress";
 
 describe("learning rules", () => {
   it("every lesson introduces at most 8 new words", () => {

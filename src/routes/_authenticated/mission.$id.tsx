@@ -219,7 +219,7 @@ function AlreadyDone({ mission, score }: { mission: Mission; score: number }) {
       <p className="mt-6 text-6xl">🔒</p>
       <h1 className="mt-4 text-3xl">Mission complete!</h1>
       <p className="mt-1 text-lg text-muted-foreground" lang="es">Ya hiciste esta misión, así que quedó cerrada.</p>
-      <p className="mt-2 text-muted-foreground">Aciertos al primer intento: {score} de {totalOf(mission)}</p>
+      <p className="mt-2 text-muted-foreground">Aciertos al primer intento: {score} de {mission.words.length + 1}</p>
       <div className="mt-6 flex flex-wrap justify-center gap-2">
         {mission.words.map((w) => (
           <span key={w} className="rounded-full bg-vocab px-3 py-1 font-bold">{WORDS[w]?.emoji} {WORDS[w]?.en} · {WORDS[w]?.es}</span>
