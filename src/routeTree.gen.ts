@@ -10,33 +10,155 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedCompanionRouteImport } from './routes/_authenticated/companion'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedWelcomeRouteImport } from './routes/_authenticated/welcome'
+import { Route as AuthenticatedMissionIdRouteImport } from './routes/_authenticated/mission.$id'
+import { Route as AuthenticatedWorldIndexRouteImport } from './routes/_authenticated/world.index'
+import { Route as AuthenticatedWorldCoffeeShopRouteImport } from './routes/_authenticated/world.coffee-shop'
+import { Route as AuthenticatedWorldHomeRouteImport } from './routes/_authenticated/world.home'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedCompanionRoute = AuthenticatedCompanionRouteImport.update({
+  id: '/companion',
+  path: '/companion',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedWelcomeRoute = AuthenticatedWelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMissionIdRoute = AuthenticatedMissionIdRouteImport.update({
+  id: '/mission/$id',
+  path: '/mission/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedWorldIndexRoute = AuthenticatedWorldIndexRouteImport.update({
+  id: '/world/',
+  path: '/world/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedWorldCoffeeShopRoute =
+  AuthenticatedWorldCoffeeShopRouteImport.update({
+    id: '/world/coffee-shop',
+    path: '/world/coffee-shop',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedWorldHomeRoute = AuthenticatedWorldHomeRouteImport.update({
+  id: '/world/home',
+  path: '/world/home',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/companion': typeof AuthenticatedCompanionRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/welcome': typeof AuthenticatedWelcomeRoute
+  '/mission/$id': typeof AuthenticatedMissionIdRoute
+  '/world/coffee-shop': typeof AuthenticatedWorldCoffeeShopRoute
+  '/world/home': typeof AuthenticatedWorldHomeRoute
+  '/world/': typeof AuthenticatedWorldIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/companion': typeof AuthenticatedCompanionRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/welcome': typeof AuthenticatedWelcomeRoute
+  '/mission/$id': typeof AuthenticatedMissionIdRoute
+  '/world/coffee-shop': typeof AuthenticatedWorldCoffeeShopRoute
+  '/world/home': typeof AuthenticatedWorldHomeRoute
+  '/world': typeof AuthenticatedWorldIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/companion': typeof AuthenticatedCompanionRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/welcome': typeof AuthenticatedWelcomeRoute
+  '/_authenticated/mission/$id': typeof AuthenticatedMissionIdRoute
+  '/_authenticated/world/coffee-shop': typeof AuthenticatedWorldCoffeeShopRoute
+  '/_authenticated/world/home': typeof AuthenticatedWorldHomeRoute
+  '/_authenticated/world/': typeof AuthenticatedWorldIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/companion'
+    | '/dashboard'
+    | '/profile'
+    | '/welcome'
+    | '/mission/$id'
+    | '/world/coffee-shop'
+    | '/world/home'
+    | '/world/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/companion'
+    | '/dashboard'
+    | '/profile'
+    | '/welcome'
+    | '/mission/$id'
+    | '/world/coffee-shop'
+    | '/world/home'
+    | '/world'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/companion'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/profile'
+    | '/_authenticated/welcome'
+    | '/_authenticated/mission/$id'
+    | '/_authenticated/world/coffee-shop'
+    | '/_authenticated/world/home'
+    | '/_authenticated/world/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +170,108 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/companion': {
+      id: '/_authenticated/companion'
+      path: '/companion'
+      fullPath: '/companion'
+      preLoaderRoute: typeof AuthenticatedCompanionRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/welcome': {
+      id: '/_authenticated/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof AuthenticatedWelcomeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/mission/$id': {
+      id: '/_authenticated/mission/$id'
+      path: '/mission/$id'
+      fullPath: '/mission/$id'
+      preLoaderRoute: typeof AuthenticatedMissionIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/world/': {
+      id: '/_authenticated/world/'
+      path: '/world'
+      fullPath: '/world/'
+      preLoaderRoute: typeof AuthenticatedWorldIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/world/coffee-shop': {
+      id: '/_authenticated/world/coffee-shop'
+      path: '/world/coffee-shop'
+      fullPath: '/world/coffee-shop'
+      preLoaderRoute: typeof AuthenticatedWorldCoffeeShopRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/world/home': {
+      id: '/_authenticated/world/home'
+      path: '/world/home'
+      fullPath: '/world/home'
+      preLoaderRoute: typeof AuthenticatedWorldHomeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedCompanionRoute: typeof AuthenticatedCompanionRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedWelcomeRoute: typeof AuthenticatedWelcomeRoute
+  AuthenticatedMissionIdRoute: typeof AuthenticatedMissionIdRoute
+  AuthenticatedWorldCoffeeShopRoute: typeof AuthenticatedWorldCoffeeShopRoute
+  AuthenticatedWorldHomeRoute: typeof AuthenticatedWorldHomeRoute
+  AuthenticatedWorldIndexRoute: typeof AuthenticatedWorldIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedCompanionRoute: AuthenticatedCompanionRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedWelcomeRoute: AuthenticatedWelcomeRoute,
+  AuthenticatedMissionIdRoute: AuthenticatedMissionIdRoute,
+  AuthenticatedWorldCoffeeShopRoute: AuthenticatedWorldCoffeeShopRoute,
+  AuthenticatedWorldHomeRoute: AuthenticatedWorldHomeRoute,
+  AuthenticatedWorldIndexRoute: AuthenticatedWorldIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
