@@ -87,6 +87,11 @@ function MissionPage() {
 
 function Learn({ wordId, companion, onNext }: { wordId: string; companion: CompanionId; onNext: () => void }) {
   const w = WORDS[wordId]!;
+  const [listened, setListened] = useState(false);
+  const listen = () => {
+    speak(`${w.en}. ${w.example}`, companion);
+    setListened(true);
+  };
   return (
     <div className="rounded-3xl bg-card p-8 text-center shadow-lift">
       <span className="rounded-full bg-vocab px-3 py-1 text-xs font-bold">New word · Escucha</span>
