@@ -188,8 +188,11 @@ function Build({ mission, companion, onNext }: { mission: Mission; companion: Co
   return (
     <div className="rounded-3xl bg-card p-8 shadow-lift">
       <span className="rounded-full bg-phrase px-3 py-1 text-xs font-bold">Construye la frase</span>
-      <p className="mt-4 text-lg font-semibold" lang="en">{s.tokens.join(" ")}</p>
-      <p className="mt-1 text-muted-foreground" lang="es">{s.meaning}</p>
+      <p className="mt-4 text-lg font-semibold" lang="es">¿Cómo se dice en inglés?</p>
+      <p className="mt-1 text-muted-foreground" lang="es">“{s.meaning}”</p>
+      <p className="mt-3 rounded-2xl bg-phrase px-4 py-2 text-sm font-semibold" lang="es">
+        💡 Pista: empieza con <span className="font-black" lang="en">“{s.tokens[0]}”</span> y tiene {s.tokens.length} palabras.
+      </p>
       <div className="mt-6 flex min-h-16 flex-wrap gap-2 rounded-2xl border-2 border-dashed p-3">
         {picked.map((k) => (
           <button key={k} onClick={() => { setPicked(picked.filter((x) => x !== k)); setState("idle"); }} className="rounded-xl bg-phrase px-3 py-2 font-bold">
