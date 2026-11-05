@@ -11,9 +11,10 @@ import { Progress } from "@/components/ui/progress";
 
 export const Route = createFileRoute("/_authenticated/mission/$id")({
   head: () => ({ meta: [{ title: "Misión — English Start" }] }),
-  loader: ({ params }) => {
+  loader: ({ params, context }) => {
     const m = getMission(params.id);
     if (!m) throw notFound();
+    context.queryClient.ensureQueryData(profileQuery);
     return m;
   },
   component: MissionPage,
@@ -32,6 +33,8 @@ function shuffle<T>(arr: T[]) {
 
 function MissionPage() {
   const mission = Route.useLoaderData();
+  const { data: profile } = useSuspenseQuery(profileQuery);
+  const companion = (profile?.companion as CompanionId) ?? "fox";
   const steps = useMemo<Step[]>(
     () => [
       ...mission.words.map((w) => ({ kind: "learn" as const, word: w })),
