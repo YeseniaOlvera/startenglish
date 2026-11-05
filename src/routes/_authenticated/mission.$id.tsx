@@ -144,7 +144,7 @@ function Build({ mission, companion, onNext }: { mission: Mission; companion: Co
   const s = mission.sentence;
   const bank = useMemo(() => shuffle(s.tokens.map((t, k) => ({ t, k }))), [s]);
   const [picked, setPicked] = useState<number[]>([]);
-  const [state, setState] = useState<"idle" | "ok" | "retry">("idle");
+  const [state, setState] = useState<"idle" | "ok" | "wrong">("idle");
   const [tries, setTries] = useState(0);
   const answer = picked.map((k) => s.tokens[k]).join(" ");
 
@@ -153,7 +153,10 @@ function Build({ mission, companion, onNext }: { mission: Mission; companion: Co
     if (isSentenceAccepted(s, answer)) {
       setState("ok");
       speak(answer, companion);
-    } else setState("retry");
+    } else {
+      setState("wrong");
+      speak(s.tokens.join(" "), companion);
+    }
   };
 
   return (
@@ -176,11 +179,13 @@ function Build({ mission, companion, onNext }: { mission: Mission; companion: Co
       </div>
       <p className="mt-5 min-h-6 font-semibold">
         {state === "ok" && "Perfect! 🎉 Así se dice."}
-        {state === "retry" && `Casi. Pista: empieza con “${s.tokens[0]}”.`}
+        {state === "wrong" && <>La frase correcta es: <span className="text-vocab-strong">“{s.tokens.join(" ")}”</span></>}
       </p>
       <div className="mt-3 flex gap-3">
         {state === "ok" ? (
           <Button variant="hero" size="lg" onClick={() => onNext(tries === 1)}>Terminar misión</Button>
+        ) : state === "wrong" ? (
+          <Button variant="hero" size="lg" onClick={() => onNext(false)}>Continuar</Button>
         ) : (
           <>
             <Button variant="hero" size="lg" onClick={check} disabled={picked.length === 0}><Check /> Revisar</Button>
