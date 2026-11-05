@@ -72,7 +72,10 @@ export function Scene({
 
       <div className="flex items-start gap-4 rounded-2xl bg-character/60 p-4">
         <img src={companion.image} alt={companion.name} className="h-16 w-auto" />
-        <p className="pt-1 font-semibold"><span className="font-extrabold">{companion.name}:</span> {intro}</p>
+        <p className="flex-1 pt-1 font-semibold"><span className="font-extrabold">{companion.name}:</span> {intro}</p>
+        <Button variant="audio" size="icon" onClick={() => speak(intro, companion.id)} aria-label={`Escuchar a ${companion.name}`}>
+          <Volume2 />
+        </Button>
       </div>
 
       <section>

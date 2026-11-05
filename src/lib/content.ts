@@ -6,14 +6,23 @@ import leo from "@/assets/companion-leo.png";
 
 export type CompanionId = "fox" | "pip" | "mia" | "leo";
 
+export type CompanionVoice = {
+  /** speech synthesis pitch (0.1–2); higher = more aguda */
+  pitch: number;
+  /** speech synthesis rate (0.5–2) */
+  rate: number;
+  /** preferred voice gender when the device offers several en-US voices */
+  prefer: "female" | "male";
+};
+
 export const COMPANIONS: Record<
   CompanionId,
-  { id: CompanionId; name: string; trait: string; image: string; greeting: string }
+  { id: CompanionId; name: string; trait: string; image: string; greeting: string; voice: CompanionVoice }
 > = {
-  fox: { id: "fox", name: "Fox", trait: "Curioso y explorador", image: fox, greeting: "Hi! Let's explore together." },
-  pip: { id: "pip", name: "Pip", trait: "Divertido y amigable", image: pip, greeting: "Hello, friend! This is fun!" },
-  mia: { id: "mia", name: "Mia", trait: "Sociable y cercana", image: mia, greeting: "Hi there! Nice to meet you." },
-  leo: { id: "leo", name: "Leo", trait: "Aventurero y motivador", image: leo, greeting: "Hey! You can do it. Let's go!" },
+  fox: { id: "fox", name: "Fox", trait: "Curioso y explorador", image: fox, greeting: "Hi! Let's explore together.", voice: { pitch: 1.3, rate: 0.95, prefer: "male" } },
+  pip: { id: "pip", name: "Pip", trait: "Divertido y amigable", image: pip, greeting: "Hello, friend! This is fun!", voice: { pitch: 1.6, rate: 1.05, prefer: "female" } },
+  mia: { id: "mia", name: "Mia", trait: "Sociable y cercana", image: mia, greeting: "Hi there! Nice to meet you.", voice: { pitch: 1.15, rate: 0.9, prefer: "female" } },
+  leo: { id: "leo", name: "Leo", trait: "Aventurero y motivador", image: leo, greeting: "Hey! You can do it. Let's go!", voice: { pitch: 0.85, rate: 0.9, prefer: "male" } },
 };
 
 export type Word = {
