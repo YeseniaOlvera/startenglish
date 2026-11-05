@@ -22,7 +22,7 @@ export const COMPANIONS: Record<
   fox: { id: "fox", name: "Fox", trait: "Curioso y explorador", image: fox, greeting: "Hi! Let's explore together.", voice: { pitch: 1.3, rate: 0.95, prefer: "male" } },
   pip: { id: "pip", name: "Pip", trait: "Divertido y amigable", image: pip, greeting: "Hello, friend! This is fun!", voice: { pitch: 1.6, rate: 1.05, prefer: "female" } },
   mia: { id: "mia", name: "Mia", trait: "Sociable y cercana", image: mia, greeting: "Hi there! Nice to meet you.", voice: { pitch: 1.15, rate: 0.9, prefer: "female" } },
-  leo: { id: "leo", name: "Leo", trait: "Aventurero y motivador", image: leo, greeting: "Hey! You can do it. Let's go!", voice: { pitch: 0.85, rate: 0.9, prefer: "male" } },
+  leo: { id: "leo", name: "Leo", trait: "Aventurero y motivador", image: leo, greeting: "Hey! You can do it. Let's go!", voice: { pitch: 0.65, rate: 0.85, prefer: "male" } },
 };
 
 export type Word = {

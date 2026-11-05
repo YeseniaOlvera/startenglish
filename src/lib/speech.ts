@@ -6,12 +6,17 @@ const FEMALE_HINTS = ["female", "samantha", "victoria", "karen", "moira", "tessa
 const MALE_HINTS = ["male", "alex", "daniel", "fred", "david", "mark", "aaron", "arthur", "gordon"];
 
 function pickVoice(prefer: "female" | "male" | null): SpeechSynthesisVoice | undefined {
-  const voices = window.speechSynthesis.getVoices().filter((v) => v.lang.replace("_", "-").startsWith("en-US"));
-  if (voices.length === 0) return undefined;
-  if (!prefer) return voices[0];
+  const all = window.speechSynthesis.getVoices();
+  const enUS = all.filter((v) => v.lang.replace("_", "-").startsWith("en-US"));
+  const en = all.filter((v) => v.lang.replace("_", "-").startsWith("en"));
+  if (en.length === 0) return undefined;
+  if (!prefer) return enUS[0] ?? en[0];
   const hints = prefer === "female" ? FEMALE_HINTS : MALE_HINTS;
-  const match = voices.find((v) => hints.some((h) => v.name.toLowerCase().includes(h)));
-  return match ?? voices[0];
+  // Try en-US first, then any English voice whose name matches the gender.
+  const match =
+    enUS.find((v) => hints.some((h) => v.name.toLowerCase().includes(h))) ??
+    en.find((v) => hints.some((h) => v.name.toLowerCase().includes(h)));
+  return match ?? enUS[0] ?? en[0];
 }
 
 /**
