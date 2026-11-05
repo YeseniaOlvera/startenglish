@@ -4,18 +4,21 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Volume2, Check, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { getMission, isSentenceAccepted, WORDS, type CompanionId, type Mission } from "@/lib/content";
-import { completeMission, profileQuery } from "@/lib/progress";
+import { completeMission, findCompletedMission, profileQuery, progressQuery } from "@/lib/progress";
 import { speak } from "@/lib/speech";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
 export const Route = createFileRoute("/_authenticated/mission/$id")({
   head: () => ({ meta: [{"title": "Misión — English Start"}, {"name": "description", "content": "Aprende palabras y construye frases en inglés con apoyo en español en las misiones de English Start."}, {"property": "og:title", "content": "Misión — English Start"}, {"property": "og:description", "content": "Aprende palabras y construye frases en inglés con apoyo en español en las misiones de English Start."}, {"property": "og:type", "content": "website"}, {"name": "twitter:card", "content": "summary"}] }),
-  loader: ({ params, context }) => {
+  loader: async ({ params, context }) => {
     const m = getMission(params.id);
     if (!m) throw notFound();
-    context.queryClient.ensureQueryData(profileQuery);
-    return m;
+    const [profile, progress] = await Promise.all([
+      context.queryClient.ensureQueryData(profileQuery),
+      context.queryClient.ensureQueryData(progressQuery),
+    ]);
+    return { mission: m, profile, completed: findCompletedMission(progress.missions, m.id) };
   },
   component: MissionPage,
 });
