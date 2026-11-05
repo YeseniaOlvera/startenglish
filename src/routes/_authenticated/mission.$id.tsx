@@ -100,9 +100,12 @@ function Learn({ wordId, companion, onNext }: { wordId: string; companion: Compa
       <p className="mt-2 text-xl text-muted-foreground" lang="es">{w.es}</p>
       <p className="mt-4 text-lg" lang="en">“{w.example}”</p>
       <p className="mt-1 text-sm text-muted-foreground" lang="es">{w.exampleEs}</p>
-      <div className="mt-8 flex justify-center gap-3">
-        <Button variant="audio" size="lg" onClick={() => speak(`${w.en}. ${w.example}`, companion)}><Volume2 /> Escuchar</Button>
-        <Button variant="hero" size="lg" onClick={onNext}>Siguiente</Button>
+      <p className="mt-6 min-h-6 text-sm font-semibold text-muted-foreground" lang="es">
+        {listened ? "¡Bien! Ahora puedes continuar." : "👆 Primero presiona “Escuchar” para oír la palabra."}
+      </p>
+      <div className="mt-2 flex justify-center gap-3">
+        <Button variant="audio" size="lg" onClick={listen} className={listened ? "" : "animate-pulse"}><Volume2 /> Escuchar</Button>
+        <Button variant="hero" size="lg" onClick={onNext} disabled={!listened}>Siguiente</Button>
       </div>
     </div>
   );
